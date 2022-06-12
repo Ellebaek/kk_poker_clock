@@ -94,7 +94,8 @@ var pokerClock = {
 			$('#roundEntry').html('');
 			for(var i=0, len=pokerClock.rounds.length; i<len; i++){
 				var round = pokerClock.rounds[i];
-				formatString += i+1 + '\t' +round.small + '\t' +round.big + '\t' + round.ante + '\t' + round.minutes + '\n';
+				//formatString += i+1 + '\t' + round.small + '\t' +round.big + '\t' + round.ante + '\t' + round.minutes + '\n';
+				formatString += (i+1).toString().padEnd(3, " ") + round.small.toString().padStart(8, " ") + round.big.toString().padStart(8, " ") + round.ante.toString().padStart(6, " ") + round.minutes.toString().padStart(4, " ") + '\n';
 			}
 			$('#roundEntry').html(formatString);
 			$("#importStructureDialog").dialog('open');
@@ -102,17 +103,17 @@ var pokerClock = {
 		$("#pauseButton").toggle(pokerClock.pauseCountdown, pokerClock.startCountdown).click();
 		$("#soundButton").toggle(pokerClock.muteOn,pokerClock.muteOff).css({color:'green'});
 
-		$("#startRound").bind('click', function(){ 
+		$("#startRound").bind('click', function(){
 			pokerClock.startRound(pokerClock.currentRound);
 		}).attr({title:'restart current round'});
-		
+
 		$(".nextRound").attr({title:'next round'})
 					   .bind('click', function(){
 			$('.timeLeft').removeClass('warning');
 			if (pokerClock.currentRound < pokerClock.rounds.length - 1){
 				if(!pokerClock.mute){pokerClock.pop.play()};
 				pokerClock.currentRound++;
-				pokerClock.startRound(pokerClock.currentRound) ;
+				pokerClock.startRound(pokerClock.currentRound);
 				pokerClock.showRounds();
 			}
 		});
@@ -123,6 +124,7 @@ var pokerClock = {
 								pokerClock.currentRound--;
 								pokerClock.startRound(pokerClock.currentRound) ;
 								pokerClock.showRounds();
+								console.log("Time left: " + pokerClock.timeLeft);
 							}
 						});
 
@@ -141,7 +143,7 @@ var pokerClock = {
 
 
 		//$("#rounds input[type='text']").live('change', pokerClock.updateRounds);
-		
+
 
 		$( "#tabs" ).tabs();
 
@@ -244,7 +246,6 @@ var pokerClock = {
 	alert : new Audio("../snd/alert.wav"),
 	currentRound : 0,
 	nextRound : function(){
-
 		this.currentRound++;
 		return this.currentRound;
 	},
@@ -303,6 +304,7 @@ var pokerClock = {
 	},
 	updateRounds :  function(){
 		//alert('updating');
+		console.log("updateRounds called");
 		pokerClock.rounds = [];
 		$("#rounds tr.rounds").each(function(){
 			var min = $(this).find(".minutes").val();
@@ -317,28 +319,13 @@ var pokerClock = {
 	},
 
 	startRound : function(roundIndex){
+		console.log("startRound called, roundIndex=" + roundIndex);
 		var round = pokerClock.rounds[roundIndex];
 		var nextRound = pokerClock.rounds[roundIndex + 1];
-		pokerClock.showCountdown();
-//		chrome.tts.stop();
-		if (roundIndex === 0){
-//			pokerClock.say('Welcome to the tournament.');
-		}
-		if(round.small > 0 && round.big > 0){
-			
-//			pokerClock.say('Blinds are ' +round.small +' dollar small blind. And '+ round.big + ' dollar big blind.');
-
-			if(round.ante > 0 ){
-//				pokerClock.say('There is a '+ round.ante + ' dollar ante.');
-			}
-//			pokerClock.say($('#quote').val());
-		}else{
-//			chrome.tts.stop();
-//			pokerClock.say('Break time for ' + round.minutes + 'minutes.');
-//			pokerClock.say('Break time for ' + round.minutes + 'minutes.');
+		if (roundIndex == 1) {
+			pokerClock.showCountdown();
 		}
 
-		
 		$("#roundInfo").html(round.small + '/' + round.big);
 		if(round.ante > 0){ $("#roundInfo").append('(' + round.ante +')'); }
 		if(round.small == 0 && round.big == 0 && round.ante == 0){ $("#roundInfo").html('on break'); }
@@ -351,8 +338,12 @@ var pokerClock = {
 
 		$('.timeLeft').effect('shake', {}, 100);
 		pokerClock.secondsLeft = (round.minutes * 60) + 1 ;
+		if (roundIndex > 1) {
+			pokerClock.showCountdown();
+		}
 	},
 	showRounds : function(){
+		console.log("showRounds called");
 		$("#rounds tr.rounds").remove();
 		for (r=0; r< pokerClock.rounds.length; r++){
 
@@ -391,7 +382,7 @@ var pokerClock = {
 	},
 	endLevel : function(){
 
-		$('.timeLeft').effect('pulsate',{times:8},'slow');
+		//$('.timeLeft').effect('pulsate',{times:8},'slow');
 		$("#nextRound").click();
 		$('.timeLeft').removeClass('warning');
 	},
@@ -410,18 +401,19 @@ var pokerClock = {
 			if(minutes === 1 && timeLeft == 0){
 				if(!pokerClock.mute){
 					pokerClock.alert.play();
-					setTimeout(function(){
+//					setTimeout(function(){
 //						pokerClock.say('One minute left in round');
-					}, 3000);
+//					}, 3000);
 				};
-				$('.timeLeft').effect('pulsate',{times:8},'slow').addClass('warning');
+//				$('.timeLeft').effect('pulsate',{times:8},'slow').addClass('warning');
+				$('.timeLeft').addClass('warning');
 			}
 
 			if (minutes < 10){ minutes = "0" + minutes; }
 		}
 		seconds = timeLeft;
 
-		if(hours == 0 & minutes == 0 &seconds == 3){
+		if(hours == 0 & minutes == 0 & seconds == 3){
 			if(!pokerClock.mute){pokerClock.warning.play()};
 		}
 
@@ -497,30 +489,19 @@ var pokerClock = {
 	[
 		//begin structure
 		{
-			structureName : 'Sit & Go without antes - 1,500 chips',
+			structureName : 'Sit & Go fast - 30,000 chips',
 			rounds :
 			[
-				{minutes: 10, small: 10, big: 20, ante: 0},
-				{minutes: 10, small: 15, big: 30, ante: 0},
-				{minutes: 10, small: 25, big: 50, ante: 0},
-				{minutes: 10, small: 50, big: 100, ante: 0},
-				{minutes: 10, small: 75, big: 150, ante: 0},
-				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 5, small: 0, big: 0, ante: 0},
-				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 10, small: 200, big: 400, ante: 0},
-				{minutes: 10, small: 300, big: 600, ante: 0},
-				{minutes: 10, small: 400, big: 800, ante: 0},
-				{minutes: 10, small: 600, big: 1200, ante: 0},
-				{minutes: 10, small: 800, big: 1600, ante: 0},
-				{minutes: 5, small: 0, big: 0, ante: 0},
-				{minutes: 10, small: 1000, big: 2000, ante: 0},
-				{minutes: 10, small: 1500, big: 3000, ante: 0},
-				{minutes: 10, small: 2000, big: 4000, ante: 0},
-				{minutes: 10, small: 2500, big: 5000, ante: 0},
-				{minutes: 10, small: 3000, big: 6000, ante: 0},
-				{minutes: 10, small: 3500, big: 7000, ante: 0},
-				{minutes: 10, small: 4000, big: 8000, ante: 0}
+				{minutes: 1, small: 100, big: 200, ante: 0},
+				{minutes: 1, small: 200, big: 400, ante: 0},
+				{minutes: 1, small: 300, big: 500, ante: 0},
+				{minutes: 1, small: 500, big: 1000, ante: 0},
+				{minutes: 1, small: 700, big: 1400, ante: 0},
+				{minutes: 1, small: 1000, big: 2000, ante: 0},
+				{minutes: 1, small: 1500, big: 3000, ante: 0},
+				{minutes: 1, small: 2500, big: 5000, ante: 0},
+				{minutes: 1, small: 4000, big: 8000, ante: 0},
+				{minutes: 1, small: 6000, big: 12000, ante: 0}
 			]
 		},
 		//begin structure

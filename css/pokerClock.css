@@ -198,6 +198,7 @@ padding-right:10em
     height: 100%;
     width: 100%;
     font-size: 2vw;
+    font-family: monospace;
 }
 #clock{
     height:100%;
