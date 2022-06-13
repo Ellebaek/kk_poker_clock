@@ -1,36 +1,7 @@
 $(function () { pokerClock.init(); });
 
 var pokerClock = {
-//	voiceOptions : {
-//		voiceName : 'Google UK English Male',
-//		enqueue: true,
-//		pitch : 0.42,
-//		rate : 0.78,
-//		volume: 1
-//	},
-//	voiceNames :['Alex'],
-//	say : function(quote){
-//		if(!pokerClock.mute){
-//			chrome.tts.speak(quote, pokerClock.voiceOptions);
-//		}
-//	},
 	init : function(){
-
-//		chrome.tts.getVoices(
-//          function(voices) {
-//          	pokerClock.voiceNames = [];
-//            for (var i = 0; i < voices.length; i++) {
-//              var vName = voices[i].voiceName;
-//              pokerClock.voiceNames.push(vName);
-//              if(vName === pokerClock.voiceOptions.voiceName){
-//              	$('#voiceName').append('<option selected="selected" value="' + vName + '">' + vName + '</option>');
-//              }else{
-//              	$('#voiceName').append('<option value="' + vName + '">' + vName + '</option>');
-//              }
-//
-//            }
-//          });
-
 		$("#alertBox").dialog({ autoOpen: false, modal: true, width:300, height:200, show: 'blind', hide: 'blind'});
 
 		$("#importStructureDialog").dialog({
@@ -124,26 +95,12 @@ var pokerClock = {
 								pokerClock.currentRound--;
 								pokerClock.startRound(pokerClock.currentRound) ;
 								pokerClock.showRounds();
-								console.log("Time left: " + pokerClock.timeLeft);
 							}
 						});
-
-		// $(".extra").toggle(
-		// 	function(){
-		// 		$(this).hide();
-		// 	},
-		// 	function(){
-		// 		$(this).show();
-		// 	}
-		// ).toggle().unbind('click');
 
 		$("#structure").change(function(){
 			pokerClock.loadStructure($(this).val());
 		});
-
-
-		//$("#rounds input[type='text']").live('change', pokerClock.updateRounds);
-
 
 		$( "#tabs" ).tabs();
 
@@ -168,53 +125,6 @@ var pokerClock = {
 			$(document).bind('keydown', bindKeys);
 		});
 
-//		$('#voiceName').val(pokerClock.voiceOptions.voiceName).change(function(){
-//			pokerClock.voiceOptions.voiceName = $(this).val();
-//		});
-
-//		$('#voiceRateSlider').slider({
-//	      value:pokerClock.voiceOptions.rate,
-//	      min: 0.1,
-//	      max: 4,
-//	      step: 0.01,
-//	      slide: function( event, ui ) {
-//	      	pokerClock.voiceOptions.rate = ui.value;
-//	        $( "#voiceRate" ).val( ui.value );
-//	      }
-//	    });
-//	    $('#rateLabel').click(function(){
-//	    	pokerClock.voiceOptions.rate = 1;
-//	    	$( "#voiceRate" ).val( 1 );
-//	    	$('#voiceRateSlider').slider({value: 1});
-//	    });
-
-//	    $( "#voiceRate" ).val(pokerClock.voiceOptions.rate);
-
-//	    $('#voicePitchSlider').slider({
-//	      value: pokerClock.voiceOptions.pitch,
-//	      min: 0.1,
-//	      max: 2,
-//	      step: 0.01,
-//	      slide: function( event, ui ) {
-//	      	pokerClock.voiceOptions.pitch = ui.value;
-//	        $( "#voicePitch" ).val( ui.value );
-//	      }
-//	    });
-
-//	    $('#pitchLabel').click(function(){
-//	    	pokerClock.voiceOptions.pitch = 1;
-//	    	$( "#voicePitch" ).val( 1 );
-//	    	$('#voicePitchSlider').slider({value: 1});
-//	    });
-
-//	    $( "#voicePitch" ).val(pokerClock.voiceOptions.pitch);
-
-//		$('#say').button().click(function(){
-//			chrome.tts.stop();
-//			var quote = $('#quote').val();
-//			if(quote) pokerClock.say(quote);
-//		});
-
 		function bindKeys(e){
 			var key = e.keyCode;
 			console.log('key', key);
@@ -235,8 +145,7 @@ var pokerClock = {
 
 		pokerClock.showStructures();
 		pokerClock.loadStructure(0);
-		pokerClock.showCountdown();
-
+		//pokerClock.showCountdown();
 	},
 	cfg : {
 		debug: false
@@ -322,7 +231,9 @@ var pokerClock = {
 		console.log("startRound called, roundIndex=" + roundIndex);
 		var round = pokerClock.rounds[roundIndex];
 		var nextRound = pokerClock.rounds[roundIndex + 1];
-		if (roundIndex == 1) {
+		pokerClock.secondsLeft = (round.minutes * 60) + 1 ;
+		console.log("sec=" + pokerClock.secondsLeft);
+		if (roundIndex == 0) {
 			pokerClock.showCountdown();
 		}
 
@@ -336,9 +247,9 @@ var pokerClock = {
 			if(nextRound.small == 0 && nextRound.big == 0 && nextRound.ante == 0){ $("#next").html('next round: on break'); }
 		}
 
-		$('.timeLeft').effect('shake', {}, 100);
-		pokerClock.secondsLeft = (round.minutes * 60) + 1 ;
-		if (roundIndex > 1) {
+
+		if (roundIndex > 0) {
+			$('.timeLeft').effect('shake', {}, 100);
 			pokerClock.showCountdown();
 		}
 	},
@@ -376,10 +287,10 @@ var pokerClock = {
 		});
 	},
 	secondsLeft : 65,
-	setCountdown: function(){
-		pokerClock.secondsLeft = minutes * 60;
-
-	},
+//	setCountdown: function(){
+//		pokerClock.secondsLeft = minutes * 60;
+//
+//	},
 	endLevel : function(){
 
 		//$('.timeLeft').effect('pulsate',{times:8},'slow');
@@ -387,6 +298,8 @@ var pokerClock = {
 		$('.timeLeft').removeClass('warning');
 	},
 	showCountdown : function(){
+		console.log("showCountdown called");
+		console.log("seconds:" + pokerClock.secondsLeft);
 		var hours, minutes, seconds;
 		pokerClock.secondsLeft --;
 		if (pokerClock.secondsLeft < 1 ){
@@ -398,25 +311,28 @@ var pokerClock = {
 			minutes = parseInt(timeLeft  /  60);
 			timeLeft = parseInt(timeLeft %  60);
 
-			if(minutes === 1 && timeLeft == 0){
-				if(!pokerClock.mute){
-					pokerClock.alert.play();
+//			if(minutes === 1 && timeLeft == 0){
+//				if(!pokerClock.mute){
+//					pokerClock.alert.play();
 //					setTimeout(function(){
 //						pokerClock.say('One minute left in round');
 //					}, 3000);
-				};
+//				};
 //				$('.timeLeft').effect('pulsate',{times:8},'slow').addClass('warning');
-				$('.timeLeft').addClass('warning');
-			}
+//				$('.timeLeft').addClass('warning');
+//			}
 
 			if (minutes < 10){ minutes = "0" + minutes; }
 		}
 		seconds = timeLeft;
 
-		if(hours == 0 & minutes == 0 & seconds == 3){
-			if(!pokerClock.mute){pokerClock.warning.play()};
+		if(hours == 0 & minutes == 0 & seconds == 1){
+			if(!pokerClock.mute){pokerClock.alert.play()};
 		}
 
+		if (minutes == 0 & seconds <= 30){
+			$('.timeLeft').addClass('warning');
+		}
 
 		if(seconds < 0 ){
 			seconds = 0;

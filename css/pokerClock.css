@@ -185,9 +185,14 @@ text-decoration:line-through;
 background-color:lightGray
 }
 
-#about {
+#rules {
 padding-left:5em;
 padding-right:10em
+}
+
+#hands {
+padding-left:3em;
+padding-right:3em
 }
 
 .warning {
