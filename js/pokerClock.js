@@ -15,13 +15,11 @@ var pokerClock = {
 		        "Import": function() {
 		        	var roundsString = $('#roundEntry').val();
 					var rounds = roundsString.split(/\n/);
-					//console.log(rounds);
 					pokerClock.rounds = [];
 					for(var i=0, len=rounds.length; i<len; i++){
 						var round = rounds[i];
 
 						var fields = round.split(/\s+/);
-						//console.log(fields);
 						for(var j=0, jlen=fields.length; j<jlen; j++){
 							var field = fields[j];
 							field = field.replace(/,/,'');
@@ -144,8 +142,8 @@ var pokerClock = {
 		}
 
 		pokerClock.showStructures();
-		pokerClock.loadStructure(0);
-		//pokerClock.showCountdown();
+		pokerClock.loadStructure(1);
+		$('#structure').prop('selectedIndex', 1);
 	},
 	cfg : {
 		debug: false
@@ -164,15 +162,12 @@ var pokerClock = {
 	mute : false,
 	muteOn : function(){
 		pokerClock.mute = true;
-//		chrome.tts.stop();
 		$("#soundButton").css({color:'red'}).attr({title:'sound disabled'});
-
 	},
 	muteOff : function(){
 		pokerClock.mute = false;
 		pokerClock.pop.play();
 		$("#soundButton").css({color:'green'}).attr({title:'sound enabled'});
-
 	},
 	timeInterval : 0,
 	logEvent : function(msg){
@@ -185,21 +180,14 @@ var pokerClock = {
 		$(this).html('pause');
 	},
 	startCountdown : function(){
-
 		pokerClock.pop.play();
-//		chrome.tts.stop();
-//		pokerClock.say('Clock running.');
-
 		pokerClock.countdownInterval = setInterval( function(){pokerClock.showCountdown()}, 1000);
 		$(".timeLeft").removeClass('paused');
 		$(this).html('pause clock').attr({'title':'pause clock'});
 		pokerClock.logEvent('clock unpaused');
 	},
 	pauseCountdown : function(){
-
 		pokerClock.pop.play();
-//		chrome.tts.stop();
-//		pokerClock.say('Clock paused.');
 		pokerClock.logEvent('clock paused');
 		clearInterval(pokerClock.countdownInterval);
 		$(".timeLeft").addClass('paused');
@@ -247,7 +235,6 @@ var pokerClock = {
 			if(nextRound.small == 0 && nextRound.big == 0 && nextRound.ante == 0){ $("#next").html('next round: on break'); }
 		}
 
-
 		if (roundIndex > 0) {
 			$('.timeLeft').effect('shake', {}, 100);
 			pokerClock.showCountdown();
@@ -282,18 +269,10 @@ var pokerClock = {
 			if(big == 0 && small == 0){
 				$row.addClass('break');
 			}
-
-
 		});
 	},
 	secondsLeft : 65,
-//	setCountdown: function(){
-//		pokerClock.secondsLeft = minutes * 60;
-//
-//	},
 	endLevel : function(){
-
-		//$('.timeLeft').effect('pulsate',{times:8},'slow');
 		$("#nextRound").click();
 		$('.timeLeft').removeClass('warning');
 	},
@@ -310,17 +289,6 @@ var pokerClock = {
 		if (timeLeft){
 			minutes = parseInt(timeLeft  /  60);
 			timeLeft = parseInt(timeLeft %  60);
-
-//			if(minutes === 1 && timeLeft == 0){
-//				if(!pokerClock.mute){
-//					pokerClock.alert.play();
-//					setTimeout(function(){
-//						pokerClock.say('One minute left in round');
-//					}, 3000);
-//				};
-//				$('.timeLeft').effect('pulsate',{times:8},'slow').addClass('warning');
-//				$('.timeLeft').addClass('warning');
-//			}
 
 			if (minutes < 10){ minutes = "0" + minutes; }
 		}
@@ -368,26 +336,11 @@ var pokerClock = {
 		$(".clock").html(hours + ':' + minutes + suffix );
 	},
 	rounds : [ ],
-	defaultRound : {minutes: 20, small: 25, big: 50, ante: 0},
+	defaultRound : {minutes: 10, small: 100, big: 200, ante: 0},
 
 	randomSort : function(a,b){
 		return( parseInt( Math.random()*10 ) %2 );
 	},
-	defaultPayout : { percent: 100, dollars : 0},
-	payouts : [ ],
-	showPayouts : function(){
-		$("#payouts tbody tr").remove();
-		for( i in pokerClock.payouts){
-			var rowString = '<tr class="payout">' +
-				'<td>&nbsp;'+(parseInt( i) + 1) +'&nbsp; </td>' +
-				'<td class="payout"><input type="text" value="' + pokerClock.payouts[i].percent + '" class="poPercent"/></td>' +
-				'<td class="payout"><input type="text" value="' + pokerClock.payouts[i].dollars + '" class="poDollars" readonly/></td>' +
-				'</tr>';
-			$("#payouts tbody").append(rowString);
-		}
-		$(".poPercent").change();
-	},
-
 	loadStructure : function(sIndex) {
 		pokerClock.rounds = pokerClock.structures[sIndex].rounds;
 		pokerClock.currentRound = 0;
@@ -405,345 +358,111 @@ var pokerClock = {
 	[
 		//begin structure
 		{
-			structureName : 'Sit & Go fast - 30,000 chips',
+			structureName : 'Kings Club Turbo (1h) - 30,000 chips',
 			rounds :
 			[
-				{minutes: 1, small: 100, big: 200, ante: 0},
-				{minutes: 1, small: 200, big: 400, ante: 0},
-				{minutes: 1, small: 300, big: 500, ante: 0},
-				{minutes: 1, small: 500, big: 1000, ante: 0},
-				{minutes: 1, small: 700, big: 1400, ante: 0},
-				{minutes: 1, small: 1000, big: 2000, ante: 0},
-				{minutes: 1, small: 1500, big: 3000, ante: 0},
-				{minutes: 1, small: 2500, big: 5000, ante: 0},
-				{minutes: 1, small: 4000, big: 8000, ante: 0},
-				{minutes: 1, small: 6000, big: 12000, ante: 0}
-			]
-		},
-		//begin structure
-		{
-			structureName : 'Sit & Go with antes - 1,500 chips',
-			rounds :
-			[
-				{minutes: 10, small: 10, big: 20, ante: 0},
-				{minutes: 10, small: 15, big: 30, ante: 0},
-				{minutes: 10, small: 25, big: 50, ante: 0},
-				{minutes: 10, small: 50, big: 100, ante: 0},
-				{minutes: 10, small: 75, big: 150, ante: 0},
 				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 5, small: 0, big: 0, ante: 0},
-				{minutes: 10, small: 100, big: 200, ante: 25},
-				{minutes: 10, small: 200, big: 400, ante: 25},
-				{minutes: 10, small: 300, big: 600, ante: 50},
-				{minutes: 10, small: 400, big: 800, ante: 50},
-				{minutes: 10, small: 600, big: 1200, ante: 75},
-				{minutes: 10, small: 800, big: 1600, ante: 75},
-				{minutes: 5, small: 0, big: 0, ante: 0},
-				{minutes: 10, small: 1000, big: 2000, ante: 100},
-				{minutes: 10, small: 1500, big: 3000, ante: 150},
-				{minutes: 10, small: 2000, big: 4000, ante: 150},
-				{minutes: 10, small: 2500, big: 5000, ante: 200},
-				{minutes: 10, small: 3000, big: 6000, ante: 200}
+				{minutes: 10, small: 300, big: 600, ante: 0},
+				{minutes: 10, small: 500, big: 1000, ante: 0},
+				{minutes: 10, small: 1000, big: 2000, ante: 0},
+				{minutes: 10, small: 1500, big: 3000, ante: 0},
+				{minutes: 5, small: 2500, big: 5000, ante: 0},
+				{minutes: 5, small: 4000, big: 8000, ante: 0}
 			]
 		},
 		//begin structure
 		{
-			structureName : 'Home Game Standard with antes',
+			structureName : 'Kings Club Fast (1.5h) - 30,000 chips',
 			rounds :
 			[
-				{minutes: 20, small: 25, big: 25, ante: 0},
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 75, big: 150, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 25},
-				{minutes: 20, small: 200, big: 400, ante: 25},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 300, big: 600, ante: 50},
-				{minutes: 20, small: 400, big: 800, ante: 50},
-				{minutes: 20, small: 500, big: 1000, ante: 50},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 600, big: 1200, ante: 100},
-				{minutes: 20, small: 800, big: 1600, ante: 100},
-				{minutes: 20, small: 1000, big: 2000, ante: 200},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 2000, big: 4000, ante: 300},
-				{minutes: 20, small: 3000, big: 6000, ante: 400},
-				{minutes: 20, small: 4000, big: 8000, ante: 500},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 5000, big: 10000, ante: 600},
-				{minutes: 20, small: 6000, big: 12000, ante: 700},
-				{minutes: 20, small: 7000, big: 14000, ante: 800},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 8000, big: 16000, ante: 900},
-				{minutes: 20, small: 9000, big: 18000, ante: 1000}
+				{minutes: 10, small: 100, big: 200, ante: 0},
+				{minutes: 10, small: 200, big: 400, ante: 0},
+				{minutes: 10, small: 400, big: 800, ante: 0},
+				{minutes: 10, small: 600, big: 1200, ante: 0},
+				{minutes: 10, small: 800, big: 1600, ante: 0},
+				{minutes: 10, small: 1000, big: 2000, ante: 0},
+				{minutes: 10, small: 1500, big: 3000, ante: 0},
+				{minutes: 10, small: 2500, big: 5000, ante: 0},
+				{minutes: 10, small: 4000, big: 8000, ante: 0}
 			]
 		},
 		//begin structure
 		{
-			structureName : 'Home Game Standard without antes',
+			structureName : 'Kings Club Medium (2h) - 30,000 chips',
 			rounds :
 			[
-				{minutes: 20, small: 25, big: 25, ante: 0},
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 75, big: 150, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 0},
-				{minutes: 20, small: 200, big: 400, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 300, big: 600, ante: 0},
-				{minutes: 20, small: 400, big: 800, ante: 0},
-				{minutes: 20, small: 500, big: 1000, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 600, big: 1200, ante: 0},
-				{minutes: 20, small: 800, big: 1600, ante: 0},
-				{minutes: 20, small: 1000, big: 2000, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 2000, big: 4000, ante: 0},
-				{minutes: 20, small: 3000, big: 6000, ante: 0},
-				{minutes: 20, small: 4000, big: 8000, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 5000, big: 10000, ante: 0},
-				{minutes: 20, small: 6000, big: 12000, ante: 0},
-				{minutes: 20, small: 7000, big: 14000, ante: 0},
-				{minutes: 10, small: 0, big: 0, ante: 0},
-				{minutes: 20, small: 8000, big: 16000, ante: 0},
-				{minutes: 20, small: 9000, big: 18000, ante: 0}
+				{minutes: 10, small: 100, big: 200, ante: 0},
+				{minutes: 10, small: 200, big: 400, ante: 0},
+				{minutes: 10, small: 300, big: 600, ante: 0},
+				{minutes: 10, small: 400, big: 800, ante: 0},
+				{minutes: 10, small: 500, big: 1000, ante: 0},
+				{minutes: 10, small: 600, big: 1200, ante: 0},
+				{minutes: 10, small: 800, big: 1600, ante: 0},
+				{minutes: 10, small: 1000, big: 2000, ante: 0},
+				{minutes: 10, small: 1500, big: 3000, ante: 0},
+				{minutes: 10, small: 2000, big: 4000, ante: 0},
+				{minutes: 10, small: 3000, big: 6000, ante: 0},
+				{minutes: 10, small: 4000, big: 8000, ante: 0}
 			]
 		},
-		//Begin structure
+		//begin structure
 		{
-			structureName : 'Professional with antes',
+			structureName : 'Kings Club Slow (3h) - 30,000 chips',
 			rounds :
 			[
-				{minutes: 30, small: 25, big: 50, ante: 0},
-				{minutes: 30, small: 50, big: 100, ante: 0},
-				{minutes: 30, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 100, big: 200, ante: 25},
-				{minutes: 30, small: 150, big: 300, ante: 25},
-				{minutes: 30, small: 200, big: 400, ante: 50},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 300, big: 600, ante: 75},
-				{minutes: 30, small: 400, big: 800, ante: 100},
-				{minutes: 30, small: 600, big: 1200, ante: 100},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 800, big: 1600, ante: 200},
-				{minutes: 30, small: 1000, big: 2000, ante: 300},
-				{minutes: 30, small: 1500, big: 3000, ante: 400},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 2000, big: 4000, ante: 500},
-				{minutes: 30, small: 3000, big: 6000, ante: 500},
-				{minutes: 30, small: 4000, big: 8000, ante: 1000},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 6000, big: 12000, ante: 1000},
-				{minutes: 30, small: 8000, big: 16000, ante: 2000},
-				{minutes: 30, small: 10000, big: 20000, ante: 3000},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 15000, big: 30000, ante: 4000},
-				{minutes: 30, small: 20000, big: 40000, ante: 5000},
-				{minutes: 30, small: 30000, big: 60000, ante: 5000}
+				{minutes: 15, small: 100, big: 200, ante: 0},
+				{minutes: 15, small: 200, big: 400, ante: 0},
+				{minutes: 15, small: 300, big: 600, ante: 0},
+				{minutes: 15, small: 400, big: 800, ante: 0},
+				{minutes: 15, small: 500, big: 1000, ante: 0},
+				{minutes: 15, small: 600, big: 1200, ante: 0},
+				{minutes: 15, small: 800, big: 1600, ante: 0},
+				{minutes: 15, small: 1000, big: 2000, ante: 0},
+				{minutes: 15, small: 1500, big: 3000, ante: 0},
+				{minutes: 15, small: 2000, big: 4000, ante: 0},
+				{minutes: 15, small: 3000, big: 6000, ante: 0},
+				{minutes: 15, small: 4000, big: 8000, ante: 0}
 			]
 		},
-		//Begin structure
+		//begin structure
 		{
-			structureName : 'Professional without antes',
+			structureName : 'Home Game Turbo with antes',
 			rounds :
 			[
-				{minutes: 30, small: 25, big: 50, ante: 0},
-				{minutes: 30, small: 50, big: 100, ante: 0},
-				{minutes: 30, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 150, big: 300, ante: 0},
-				{minutes: 30, small: 200, big: 400, ante: 0},
-				{minutes: 30, small: 300, big: 600, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 400, big: 800, ante: 0},
-				{minutes: 30, small: 600, big: 1200, ante: 0},
-				{minutes: 30, small: 800, big: 1600, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 1000, big: 2000, ante: 0},
-				{minutes: 30, small: 1500, big: 3000, ante: 0},
-				{minutes: 30, small: 2000, big: 4000, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 3000, big: 6000, ante: 0},
-				{minutes: 30, small: 4000, big: 8000, ante: 0},
-				{minutes: 30, small: 6000, big: 12000, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 8000, big: 16000, ante: 0},
-				{minutes: 30, small: 10000, big: 20000, ante: 0},
-				{minutes: 30, small: 15000, big: 30000, ante: 0},
-				{minutes: 15, small: 0, big: 0, ante: 0},
-				{minutes: 30, small: 20000, big: 40000, ante: 0},
-				{minutes: 30, small: 30000, big: 60000, ante: 0},
-				{minutes: 30, small: 40000, big: 80000, ante: 0}
+				{minutes: 5, small: 15, big: 30, ante: 4},
+				{minutes: 5, small: 25, big: 50, ante: 6},
+				{minutes: 5, small: 35, big: 70, ante: 9},
+				{minutes: 5, small: 50, big: 100, ante: 12},
+				{minutes: 5, small: 75, big: 150, ante: 20},
+				{minutes: 5, small: 100, big: 200, ante: 25},
+				{minutes: 5, small: 125, big: 250, ante: 30},
+				{minutes: 5, small: 150, big: 300, ante: 40},
+				{minutes: 5, small: 200, big: 400, ante: 50},
+				{minutes: 5, small: 250, big: 500, ante: 65},
+				{minutes: 5, small: 300, big: 600, ante: 75},
+				{minutes: 5, small: 350, big: 700, ante: 90},
+				{minutes: 5, small: 400, big: 800, ante: 100},
+				{minutes: 5, small: 500, big: 1000, ante: 125},
+				{minutes: 5, small: 600, big: 1200, ante: 150},
+				{minutes: 5, small: 700, big: 1400, ante: 175},
+				{minutes: 5, small: 800, big: 1600, ante: 200},
+				{minutes: 5, small: 1000, big: 2000, ante: 250},
+				{minutes: 5, small: 1250, big: 2500, ante: 315},
+				{minutes: 5, small: 1500, big: 3000, ante: 375},
+				{minutes: 5, small: 2000, big: 4000, ante: 500},
+				{minutes: 5, small: 2500, big: 5000, ante: 625},
+				{minutes: 5, small: 3000, big: 6000, ante: 750},
+				{minutes: 5, small: 3500, big: 7000, ante: 875},
+				{minutes: 5, small: 4000, big: 8000, ante: 1000},
+				{minutes: 5, small: 5000, big: 10000, ante: 1250}
 			]
-
 		},
 		//begin structure
 		{
 			structureName : 'Empty Structure',
 			rounds : [
-
 				{minutes: 0, small: 0, big: 0, ante: 0},
-
 			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $10 for 2000 chips',
-			rounds : [
-
-				{minutes: 15, small: 25, big: 50, ante: 0},
-				{minutes: 15, small: 50, big: 100, ante: 0},
-				{minutes: 15, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 800, big: 1600, ante: 0},
-				{minutes: 15, small: 1500, big: 3000, ante: 0},
-				{minutes: 15, small: 3000, big: 6000, ante: 0},
-				{minutes: 15, small: 5000, big: 10000, ante: 0},
-
-			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $15 for 3000 chips - A',
-			rounds : [
-
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 800, big: 1600, ante: 0},
-				{minutes: 15, small: 1500, big: 3000, ante: 0},
-				{minutes: 15, small: 3000, big: 6000, ante: 0},
-				{minutes: 15, small: 5000, big: 10000, ante: 0},
-				{minutes: 15, small: 10000, big: 20000, ante: 0},
-
-			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $15 for 4000 chips - B',
-			rounds : [
-
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 15, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 300, big: 600, ante: 100},
-				{minutes: 15, small: 500, big: 1000, ante: 100},
-				{minutes: 15, small: 1000, big: 2000, ante: 300},
-				{minutes: 15, small: 2000, big: 4000, ante: 500},
-				{minutes: 15, small: 3000, big: 6000, ante: 1000},
-				{minutes: 15, small: 5000, big: 10000, ante: 2000},
-				{minutes: 15, small: 10000, big: 20000, ante: 4000},
-
-			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $20 for 5000 chips - A',
-			rounds : [
-
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 300, big: 600, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 600, big: 1200, ante: 0},
-				{minutes: 15, small: 800, big: 1600, ante: 0},
-				{minutes: 15, small: 1000, big: 2000, ante: 0},
-				{minutes: 15, small: 2000, big: 4000, ante: 0},
-				{minutes: 15, small: 3000, big: 60000, ante: 0},
-				{minutes: 15, small: 5000, big: 10000, ante: 0},
-				{minutes: 15, small: 8000, big: 16000, ante: 0},
-				{minutes: 15, small: 10000, big: 20000, ante: 0},
-
-			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $20 for 7500 chips - B',
-			rounds : [
-
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 300, big: 600, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 600, big: 1200, ante: 100},
-				{minutes: 15, small: 800, big: 1600, ante: 200},
-				{minutes: 15, small: 1000, big: 2000, ante: 300},
-				{minutes: 15, small: 1500, big: 3000, ante: 500},
-				{minutes: 15, small: 2000, big: 4000, ante: 500},
-				{minutes: 15, small: 3000, big: 60000, ante: 1000},
-				{minutes: 15, small: 5000, big: 10000, ante: 1500},
-				{minutes: 15, small: 8000, big: 16000, ante: 2000},
-				{minutes: 15, small: 10000, big: 20000, ante: 3000},
-
-			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $20 for 4,500 chips - C',
-			rounds : [
-
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 300, big: 600, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 600, big: 1200, ante: 100},
-				{minutes: 15, small: 800, big: 1600, ante: 200},
-				{minutes: 15, small: 1000, big: 2000, ante: 300},
-				{minutes: 15, small: 1500, big: 3000, ante: 500},
-				{minutes: 15, small: 2000, big: 4000, ante: 500},
-				{minutes: 15, small: 3000, big: 60000, ante: 1000},
-				{minutes: 15, small: 5000, big: 10000, ante: 1500},
-				{minutes: 15, small: 8000, big: 16000, ante: 2500},
-				{minutes: 15, small: 10000, big: 20000, ante: 3000},
-
-			]
-		},
-		//end structure
-		//begin structure
-		{
-			structureName : 'Humboldt $25 for 10000 chips',
-			rounds : [
-
-				{minutes: 20, small: 25, big: 50, ante: 0},
-				{minutes: 20, small: 50, big: 100, ante: 0},
-				{minutes: 20, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 300, big: 600, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 600, big: 1200, ante: 100},
-				{minutes: 15, small: 800, big: 1600, ante: 200},
-				{minutes: 15, small: 1000, big: 2000, ante: 300},
-				{minutes: 15, small: 1500, big: 3000, ante: 500},
-				{minutes: 15, small: 2000, big: 4000, ante: 500},
-				{minutes: 15, small: 3000, big: 6000, ante: 1000},
-				{minutes: 15, small: 4000, big: 8000, ante: 1000},
-				{minutes: 15, small: 6000, big: 12000, ante: 2000},
-				{minutes: 15, small: 8000, big: 1600, ante: 3000},
-				{minutes: 15, small: 10000, big: 20000, ante: 4000},
-
-			]
-		},
-		//end structure
+		}
 	]
-
 };
