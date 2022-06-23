@@ -7,7 +7,7 @@ var pokerClock = {
 		$("#importStructureDialog").dialog({
 			autoOpen: false,
 			modal: true,
-			width:400,
+			width:500,
 			height:600,
 			show: 'blind',
 			hide: 'blind',

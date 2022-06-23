@@ -1,7 +1,138 @@
+<!DOCTYPE html>
 <html>
-<head>
- <meta http-equiv="refresh" content="0; url=./html/index.html">
-</head>
-<body>
-</body>
+	<head>
+		<title>
+			Poker Clock
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<script src="./js/preJquery.js" type="text/javascript"></script>
+		<link type="text/css" href="./css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+		<script type="text/javascript" src="./js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="./js/jquery-ui-1.8.16.custom.min.js"></script>
+		<link type="text/css" href="./css/pokerClock.css" rel="stylesheet"></script>
+		<script src="./js/pokerClock.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<div id="tabs">
+			<ul>
+
+				<li>
+					<a href="#clock"><span class="ui-icon ui-icon-clock"/>Clock</a>
+				</li>
+
+				<li>
+					<a href="#struct">Structure</a>
+				</li>
+
+				<li>
+					<a href="#rules">Rules</a>
+				</li>
+
+				<li>
+					<a href="#hands">Hands</a>
+				</li>
+
+			</ul>
+			<div id="rules">
+				<h2>
+					Basic Rules:
+				</h2>
+				<ul>
+					<li>Cards and chips must be visible on the table at all times. Large chips out front.
+					</li>
+					<li>Players have the right to request your chip count at any time.
+					</li>
+					<li>If the dealer accidentally flips over a card, that card will become the first burn card. The player cannot keep it. If the dealer flips two cards while dealing, a misdeal is declared.
+					</li>
+					<li>No string-bets. Announce that you are betting or raising before you do so. Any other action is considered a call.
+					</li>
+					<li>The cards speak for themselves. Highest cards win.
+					</li>
+					<li>No one ever gets to miss their big blind and no one ever has to pay the small blind twice in a row. If the small blind busts out, then the blinds post their money as usual and the button remains where it is. If the big blind busts out, the next big blind posts his money as usual and there is a dead small blind.
+					</li>
+					<li>The Minimum bet/raise is equal to the BB. Any re-raise must be equal or greater than the previous raise.
+					</li>
+					<li>When it gets down to heads up, the small blind is the button.
+					</li>
+				</ul>
+				<h2>
+					Basic Etiquette:
+				</h2>
+				<ul>
+					<li>Don't splash the pot. People should be able to see the number of chips bet or called.
+					</li>
+					<li>Commentary on board cards or possibilities is generally annoying.
+					</li>
+					<li>Don't discuss your hand until after the hand has been completed. If someone is trying to represent that they are holding 7/6, it becomes much more difficult to do so when you announce that you folded it.
+					</li>
+					<li>Don't rabbit-hunt excessively (looking at what fourth or fifth street would have been.)
+					</li>
+					<li>Once eliminated, it is nice if that player becomes the dealer until another player has been eliminated.
+					</li>
+				</ul>
+			</div>
+			<div id="hands">
+				<img class="header" src="./img/poker_hands.jpg">
+			</div>
+			<div id="struct" >
+
+					<div id="structureBox" title="Rounds">
+
+					<h1>
+						<button class="prevRound ui-state-default ui-corner-left">&lt;</button>
+
+						<button id="addStructure" class="import ui-state-default ui-corner-right">edit</button>
+						<button class="nextRound ui-state-default ui-corner-right">&gt;</button>
+						presets:<select name="structure" id="structure"></select>
+					</h1>
+
+					<div class="roundContainer">
+						<table id="rounds" class="rounds">
+							<tr>
+
+								<th>
+									small
+								</th>
+								<th>
+									big
+								</th>
+								<th>
+									ante
+								</th>
+								<th>
+									minutes
+								</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div id="clock">
+				<div class="timeLeft" id="timeLeft">
+					--:--:--
+				</div>
+				<div id="roundInfo"></div>
+				<div id="next"></div>
+
+				<div class="controls">
+					<button id="prevRound" class="prevRound ui-state-default ui-corner-left">&lt;</button>
+					<button id="soundButton" class="ui-button ui-button-text-only ui-widget ui-state-default" title="alert on">♪</button>
+					<button id="startRound" title="restart round" class="ui-state-default">restart round</button>
+					<button id="pauseButton" title="start clock" class="ui-state-default"></button>
+					<button id="nextRound" class="nextRound ui-state-default ui-corner-right">&gt;</button>
+				</div>
+
+			</div>
+
+			<div id="alertBox" title="Alert">
+
+			</div>
+
+
+			<div id="importStructureDialog" style="display:none">
+				<textarea name="rounds" id="roundEntry" cols="30" rows="10"></textarea>
+			</div>
+
+		</div><!-- End demo -->
+	</body>
 </html>
