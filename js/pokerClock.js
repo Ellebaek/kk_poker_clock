@@ -148,7 +148,6 @@ var pokerClock = {
 	cfg : {
 		debug: false
 	},
-	warning : new Audio("../snd/flint.wav"),
 	pop : new Audio("../snd/pop.wav"),
 	alert : new Audio("../snd/alert.wav"),
 	currentRound : 0,
