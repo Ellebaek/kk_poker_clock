@@ -186,14 +186,14 @@ var pokerClock = {
 		$(this).html('pause');
 	},
 	startCountdown : function(){
-		pokerClock.pop.play();
+		if(!pokerClock.mute){pokerClock.pop.play()};
 		pokerClock.countdownInterval = setInterval( function(){pokerClock.showCountdown()}, 1000);
 		$(".timeLeft").removeClass('paused');
 		$(this).html('pause clock').attr({'title':'pause clock'});
 		pokerClock.logEvent('clock unpaused');
 	},
 	pauseCountdown : function(){
-		pokerClock.pop.play();
+    if(!pokerClock.mute){pokerClock.pop.play()};
 		pokerClock.logEvent('clock paused');
 		clearInterval(pokerClock.countdownInterval);
 		$(".timeLeft").addClass('paused');
