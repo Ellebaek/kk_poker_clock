@@ -44,14 +44,18 @@ var pokerClock = {
 						}
 						pokerClock.rounds.push(newRound);
 					}
-					console.log(pokerClock.rounds);
+					//console.log(pokerClock.rounds);
+
 					pokerClock.showRounds();
+					pokerClock.startRound(pokerClock.currentRound);
+					//pokerClock.updateRounds();
+					//pokerClock.loadStructure($("#structure").val());
 					$('#roundEntry').html('');
 		          	$( this ).dialog( "close" );
 		        },
-		        Clear:function(){
-		        	$('#roundEntry').html('');
-		        },
+		        //Clear:function(){
+		        //	$('#roundEntry').html('');
+		        //},
 		        Cancel: function() {
 		          $( this ).dialog( "close" );
 		        }
@@ -60,13 +64,16 @@ var pokerClock = {
 
 		$('#addStructure').button().click(function(){
 			var formatString ='';
-			$('#roundEntry').html('');
+			$('#roundEntry').val('');
 			for(var i=0, len=pokerClock.rounds.length; i<len; i++){
 				var round = pokerClock.rounds[i];
 				//formatString += i+1 + '\t' + round.small + '\t' +round.big + '\t' + round.ante + '\t' + round.minutes + '\n';
-				formatString += (i+1).toString().padEnd(3, " ") + round.small.toString().padStart(8, " ") + round.big.toString().padStart(8, " ") + round.ante.toString().padStart(6, " ") + round.minutes.toString().padStart(4, " ") + '\n';
+				formatString += (i+1).toString().padEnd(3, " ") + round.small.toString().padStart(8, " ") + round.big.toString().padStart(8, " ") + round.ante.toString().padStart(6, " ") + round.minutes.toString().padStart(4, " ");
+				if (i<len-1){
+					formatString += '\n';
+				}
 			}
-			$('#roundEntry').html(formatString);
+			$('#roundEntry').val(formatString); // .html(formatString);
 			$("#importStructureDialog").dialog('open');
 		});
 		$("#pauseButton").toggle(pokerClock.pauseCountdown, pokerClock.startCountdown).click();
@@ -125,7 +132,7 @@ var pokerClock = {
 
 		function bindKeys(e){
 			var key = e.keyCode;
-			console.log('key', key);
+			//console.log('key', key);
 			if(key === 38 || key === 40){
 				//e.preventDefault();
 				$('#pauseButton').click();
@@ -198,28 +205,28 @@ var pokerClock = {
 		pokerClock.currentRound = 0;
 		pokerClock.showRounds();
 	},
-	updateRounds :  function(){
+	//updateRounds :  function(){
 		//alert('updating');
-		console.log("updateRounds called");
-		pokerClock.rounds = [];
-		$("#rounds tr.rounds").each(function(){
-			var min = $(this).find(".minutes").val();
-			var small = $(this).find(".small").val();
-			var big = $(this).find(".big").val();
-			var ante = $(this).find(".ante").val();
-			var round = {minutes: min, small: small, big: big, ante : ante};
-			pokerClock.rounds.push(round);
-		});
-		pokerClock.showRounds();
-		$(this).select();
-	},
+	//	console.log("updateRounds called");
+	//	pokerClock.rounds = [];
+	//	$("#rounds tr.rounds").each(function(){
+	//		var min = $(this).find(".minutes").val();
+	//		var small = $(this).find(".small").val();
+	//		var big = $(this).find(".big").val();
+	//		var ante = $(this).find(".ante").val();
+	//		var round = {minutes: min, small: small, big: big, ante : ante};
+	//		pokerClock.rounds.push(round);
+	//	});
+	//	pokerClock.showRounds();
+	//	$(this).select();
+  //},
 
 	startRound : function(roundIndex){
-		console.log("startRound called, roundIndex=" + roundIndex);
+		//console.log("startRound called, roundIndex=" + roundIndex);
 		var round = pokerClock.rounds[roundIndex];
 		var nextRound = pokerClock.rounds[roundIndex + 1];
 		pokerClock.secondsLeft = (round.minutes * 60) + 1 ;
-		console.log("sec=" + pokerClock.secondsLeft);
+		//console.log("sec=" + pokerClock.secondsLeft);
 		if (roundIndex == 0) {
 			pokerClock.showCountdown();
 		}
@@ -240,7 +247,7 @@ var pokerClock = {
 		}
 	},
 	showRounds : function(){
-		console.log("showRounds called");
+		//console.log("showRounds called");
 		$("#rounds tr.rounds").remove();
 		for (r=0; r< pokerClock.rounds.length; r++){
 
@@ -276,8 +283,8 @@ var pokerClock = {
 		$('.timeLeft').removeClass('warning');
 	},
 	showCountdown : function(){
-		console.log("showCountdown called");
-		console.log("seconds:" + pokerClock.secondsLeft);
+		//console.log("showCountdown called");
+		//console.log("seconds:" + pokerClock.secondsLeft);
 		var hours, minutes, seconds;
 		pokerClock.secondsLeft --;
 		if (pokerClock.secondsLeft < 1 ){
