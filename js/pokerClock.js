@@ -80,6 +80,7 @@ var pokerClock = {
 		$("#soundButton").toggle(pokerClock.muteOn,pokerClock.muteOff).css({color:'green'});
 
 		$("#startRound").bind('click', function(){
+			if(!pokerClock.mute){pokerClock.pop.play()};
 			pokerClock.startRound(pokerClock.currentRound);
 		}).attr({title:'restart current round'});
 
