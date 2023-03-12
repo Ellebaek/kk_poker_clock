@@ -156,6 +156,10 @@ var pokerClock = {
 	cfg : {
 		debug: false
 	},
+	// webserver absolute replaceWith:
+	// "/clock/snd/..."
+	// local relative path:
+	// "./snd/..."
 	pop : new Audio("/clock/snd/pop.wav"),
 	alert : new Audio("/clock/snd/alert.wav"),
 	currentRound : 0,
@@ -372,9 +376,10 @@ var pokerClock = {
 				{minutes: 10, small: 300, big: 600, ante: 0},
 				{minutes: 10, small: 500, big: 1000, ante: 0},
 				{minutes: 10, small: 1000, big: 2000, ante: 0},
-				{minutes: 10, small: 1500, big: 3000, ante: 0},
-				{minutes: 5, small: 2500, big: 5000, ante: 0},
-				{minutes: 5, small: 4000, big: 8000, ante: 0}
+				{minutes: 5, small: 2000, big: 4000, ante: 0},
+				{minutes: 5, small: 3000, big: 6000, ante: 0},
+				{minutes: 5, small: 4000, big: 8000, ante: 0},
+				{minutes: 5, small: 5000, big: 10000, ante: 0}
 			]
 		},
 		//begin structure
@@ -383,14 +388,14 @@ var pokerClock = {
 			rounds :
 			[
 				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 10, small: 200, big: 400, ante: 0},
-				{minutes: 10, small: 400, big: 800, ante: 0},
-				{minutes: 10, small: 600, big: 1200, ante: 0},
-				{minutes: 10, small: 800, big: 1600, ante: 0},
+				{minutes: 10, small: 300, big: 600, ante: 0},
+				{minutes: 10, small: 500, big: 1000, ante: 0},
 				{minutes: 10, small: 1000, big: 2000, ante: 0},
 				{minutes: 10, small: 1500, big: 3000, ante: 0},
-				{minutes: 10, small: 2500, big: 5000, ante: 0},
-				{minutes: 10, small: 4000, big: 8000, ante: 0}
+				{minutes: 10, small: 2000, big: 4000, ante: 0},
+				{minutes: 10, small: 3000, big: 6000, ante: 0},
+				{minutes: 10, small: 4000, big: 8000, ante: 0},
+				{minutes: 10, small: 5000, big: 10000, ante: 0}
 			]
 		},
 		//begin structure
@@ -402,14 +407,14 @@ var pokerClock = {
 				{minutes: 10, small: 200, big: 400, ante: 0},
 				{minutes: 10, small: 300, big: 600, ante: 0},
 				{minutes: 10, small: 400, big: 800, ante: 0},
-				{minutes: 10, small: 500, big: 1000, ante: 0},
 				{minutes: 10, small: 600, big: 1200, ante: 0},
 				{minutes: 10, small: 800, big: 1600, ante: 0},
 				{minutes: 10, small: 1000, big: 2000, ante: 0},
 				{minutes: 10, small: 1500, big: 3000, ante: 0},
 				{minutes: 10, small: 2000, big: 4000, ante: 0},
 				{minutes: 10, small: 3000, big: 6000, ante: 0},
-				{minutes: 10, small: 4000, big: 8000, ante: 0}
+				{minutes: 10, small: 4000, big: 8000, ante: 0},
+				{minutes: 10, small: 5000, big: 10000, ante: 0}
 			]
 		},
 		//begin structure
@@ -421,14 +426,14 @@ var pokerClock = {
 				{minutes: 15, small: 200, big: 400, ante: 0},
 				{minutes: 15, small: 300, big: 600, ante: 0},
 				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 500, big: 1000, ante: 0},
 				{minutes: 15, small: 600, big: 1200, ante: 0},
 				{minutes: 15, small: 800, big: 1600, ante: 0},
 				{minutes: 15, small: 1000, big: 2000, ante: 0},
 				{minutes: 15, small: 1500, big: 3000, ante: 0},
 				{minutes: 15, small: 2000, big: 4000, ante: 0},
 				{minutes: 15, small: 3000, big: 6000, ante: 0},
-				{minutes: 15, small: 4000, big: 8000, ante: 0}
+				{minutes: 15, small: 4000, big: 8000, ante: 0},
+				{minutes: 15, small: 5000, big: 10000, ante: 0}
 			]
 		},
 		//begin structure
