@@ -4,11 +4,20 @@
 		<title>
 			Poker Clock
 		</title>
+		<link rel="icon" type="image/png" href="img/favicon-16.png" sizes="16x16">
+		<link rel="icon" type="image/png" href="img/favicon-32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="img/favicon-64.png" sizes="64x64">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<script src="./js/preJquery.js" type="text/javascript"></script>
-		<link type="text/css" href="./css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet">
-		<script type="text/javascript" src="./js/jquery-1.6.2.min.js"></script>
-		<script type="text/javascript" src="./js/jquery-ui-1.8.16.custom.min.js"></script>
+		<link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="stylesheet">
+		<!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">-->
+		
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<!-- <script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js"></script> -->
+		
+		
+		<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
 		<link type="text/css" href="./css/pokerClock.css" rel="stylesheet"></script>
 		<script src="./js/pokerClock.js" type="text/javascript"></script>
 	</head>
@@ -32,6 +41,10 @@
 					<a href="#hands">Hands</a>
 				</li>
 
+				<li>
+					<a href="#acknowl">Ack</a>
+				</li>
+
 			</ul>
 			<div id="rules">
 				<h2>
@@ -39,47 +52,58 @@
 				</h2>
 				<p>Standard Texas Hold'em game rules (<a href="https://en.wikipedia.org/wiki/Texas_hold_%27em#Rules" target="_blank">https://en.wikipedia.org/wiki/Texas_hold_em#Rules</a>) and a few club specific rules apply. Listed below is a mix of club specific rules and a few of the most commonly discussed rules.</p>
 				<ul>
-					<li>Cards and chips must be visible on the table at all times. Large chips out front.
+					<li>Cards and chips must be visible on the table at all times. Large chips should be placed in front.
 					</li>
 					<li>Players have the right to request your chip count at any time.
 					</li>
-					<li>If the dealer accidentally flips over a card while dealing hole cards, a misdeal is declared. If dealer accidently flips over a card later in the hand, this card will be burned face up.
+					<li>If the dealer accidentally flips over a card while dealing hole cards, it is considered a misdeal. If the dealer accidentally flips a card later in the hand, that card will be burned face up.
 					</li>
-					<li>No string-bets. Announce that you are betting or raising before you do so. Any other action is considered a call.
+					<li>No string bets are allowed. Announce that you are betting or raising before doing so. Any other action will be considered a call.
 					</li>
-					<li>No one ever gets to miss their big blind and no one ever has to pay the small blind twice in a row. If the small blind busts out, then the blinds post their money as usual and the button remains where it is. If the big blind busts out, the next big blind posts his money as usual and there is a dead small blind.
+					<li>No player may miss their big blind, and no one is required to pay the small blind twice in a row. If the small blind busts out, then the blinds post their money as usual, and the button remains in place. If the big blind busts out, the next big blind posts their money as usual, and there is a dead small blind.
 					</li>
-					<li>The Minimum bet/raise is equal to the BB. Any re-raise must be equal or greater than the previous raise.
+					<li>The minimum bet or raise is equal to the big blind. Any re-raise must be equal to or greater than the previous raise.
 					</li>
-					<li>When it gets down to heads up, the small blind is the button.
+					<li>When the game is heads-up, the small blind is the button.
 					</li>
-					<li>If two players go broke on the same hand (multiple busts) the player with the greater amount of chips at the start of the hand finishes in the higher position.
+					<li>If two players bust on the same hand (multiple busts), the player with the greater chip count at the start of the hand finishes in the higher position.
 					</li>
 				</ul>
 				<h2>
 					Etiquette:
 				</h2>
 				<ul>
-					<li>Don't splash the pot. People should be able to see the number of chips bet or called.
+					<li>Don't splash the pot. People should be able to see the number of chips you bet or call.
 					</li>
 					<li>Commentary on board cards or possibilities is generally annoying.
 					</li>
 					<li>Don't discuss your hand until after the hand has been completed. If someone is trying to represent that they are holding 7/6, it becomes much more difficult to do so when you announce that you folded it.
 					</li>
-					<li>Don't rabbit-hunt excessively (looking at what fourth or fifth street would have been).
+					<li>Don't rabbit-hunt excessively (i.e., looking at what the fourth or fifth street would have been).
 					</li>
-					<li>Once eliminated, it is nice if that player becomes the dealer until another player has been eliminated.
+					<li>Once eliminated, it is courteous if that player acts as the dealer until another player is eliminated.
 					</li>
-					<li>No mobile devices by the table except the one displaying the poker clock. Leave the table if you need to check your messages.
+					<li>No mobile devices at the table, except the one displaying the poker clock. Leave the table if you need to check your messages.
 					</li>
-					<li>Be present when it's your turn. Expect to be autofolded if you are not at the table when action is on you.
+					<li>Be present when it’s your turn. Expect to be auto-folded if you are not at the table when action is on you.
 					</li>
-					<li>Consecutively autofolding (sitting out) is not appreciated. Expect to be eliminated from the tournament if you sit out for 20 minutes or more.
+					<li>Consecutively auto-folding (sitting out) is not appreciated. Expect to be eliminated from the tournament if you sit out for 20 minutes or more.
 					</li>
 				</ul>
 			</div>
 			<div id="hands">
-				<img class="header" src="./img/poker_hands.jpg">
+				<div class="center-stack">
+					<img class="header" src="./img/poker_hands.jpg">
+				</div>
+			</div>
+			<div id="acknowl">
+				<h2>Acknowledgement:</h2>
+				<div class="left-stack">
+					<a href="https://github.com/dshahin/PokerClock" title="Legacy Git repository">This project is inspired by Dan Shahins Poker Clock</a>
+					<a href="https://everybodyspokerleague.com/poker-rules" title="Rank of Hands">RANK OF HANDS image is copied from https://everybodyspokerleague.com</a>
+					<a href="https://www.flaticon.com/free-icons/playing-cards" title="Playing-cards icon">Tab playing-cards icon is created by riajulislam - Flaticon</a>
+					<a href="https://pixabay.com/users/gustavorezende-1488336/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=172780" title="Alert sound effect">Sound effect by Gustavo Rezende from Pixabay</a>
+				</div>
 			</div>
 			<div id="struct" >
 
@@ -125,7 +149,7 @@
 					<button id="prevRound" class="prevRound ui-state-default ui-corner-left">&lt;</button>
 					<button id="soundButton" class="ui-button ui-button-text-only ui-widget ui-state-default" title="alert on">♪</button>
 					<button id="startRound" title="restart round" class="ui-state-default">restart round</button>
-					<button id="pauseButton" title="start clock" class="ui-state-default"></button>
+					<button id="pauseButton" title="start clock" class="ui-state-default">▶ start</button>
 					<button id="nextRound" class="nextRound ui-state-default ui-corner-right">&gt;</button>
 				</div>
 

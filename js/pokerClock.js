@@ -1,3 +1,147 @@
+const DEBUG_MODE = false;
+const DEBUG_STRUCTURES = [
+	{
+		structureName: 'Debug Test Super Fast',
+		rounds: [
+			{ minutes: 0.05, small: 1, big: 2, ante: 0 },
+			{ minutes: 0.05, small: 2, big: 4, ante: 0 },
+			{ minutes: 0.05, small: 3, big: 6, ante: 0 }
+		]
+	},
+	// index 1 is default
+	{
+		structureName: 'Debug Test Fast',
+		rounds: [
+			{ minutes: 0.1, small: 100, big: 200, ante: 0 },
+			{ minutes: 0.1, small: 200, big: 400, ante: 0 },
+			{ minutes: 0.1, small: 300, big: 600, ante: 0 }
+		]
+	},
+	{
+		structureName : 'Debug Test Slow',
+		rounds :
+		[
+			{minutes: 1, small: 1000, big: 2000, ante: 0},
+			{minutes: 1, small: 9999, big: 9999, ante: 0}
+		]
+	},
+];
+
+// webserver needs absolute path: "/clock/snd/..."
+const AUDIO_PATH = DEBUG_MODE ? "./snd/" : "/clock/snd/";
+
+const PRESET_STRUCTURES = [
+	// index 0
+	{
+		structureName : 'Kings Club Turbo (1h) - 30,000 chips',
+		rounds :
+		[
+			{minutes: 10, small: 100, big: 200, ante: 0},
+			{minutes: 10, small: 300, big: 600, ante: 0},
+			{minutes: 10, small: 500, big: 1000, ante: 0},
+			{minutes: 10, small: 1000, big: 2000, ante: 0},
+			{minutes: 5, small: 2000, big: 4000, ante: 0},
+			{minutes: 5, small: 3000, big: 6000, ante: 0},
+			{minutes: 5, small: 4000, big: 8000, ante: 0},
+			{minutes: 5, small: 5000, big: 10000, ante: 0}
+		]
+	},
+	// index 1 is default
+	{
+		structureName : 'Kings Club Fast (1.5h) - 30,000 chips',
+		rounds :
+		[
+			{minutes: 10, small: 100, big: 200, ante: 0},
+			{minutes: 10, small: 300, big: 600, ante: 0},
+			{minutes: 10, small: 500, big: 1000, ante: 0},
+			{minutes: 10, small: 1000, big: 2000, ante: 0},
+			{minutes: 10, small: 1500, big: 3000, ante: 0},
+			{minutes: 10, small: 2000, big: 4000, ante: 0},
+			{minutes: 10, small: 3000, big: 6000, ante: 0},
+			{minutes: 10, small: 4000, big: 8000, ante: 0},
+			{minutes: 10, small: 5000, big: 10000, ante: 0}
+		]
+	},
+	// index 2
+	{
+		structureName : 'Kings Club Medium (2h) - 30,000 chips',
+		rounds :
+		[
+			{minutes: 10, small: 100, big: 200, ante: 0},
+			{minutes: 10, small: 200, big: 400, ante: 0},
+			{minutes: 10, small: 300, big: 600, ante: 0},
+			{minutes: 10, small: 400, big: 800, ante: 0},
+			{minutes: 10, small: 600, big: 1200, ante: 0},
+			{minutes: 10, small: 800, big: 1600, ante: 0},
+			{minutes: 10, small: 1000, big: 2000, ante: 0},
+			{minutes: 10, small: 1500, big: 3000, ante: 0},
+			{minutes: 10, small: 2000, big: 4000, ante: 0},
+			{minutes: 10, small: 3000, big: 6000, ante: 0},
+			{minutes: 10, small: 4000, big: 8000, ante: 0},
+			{minutes: 10, small: 5000, big: 10000, ante: 0}
+		]
+	},
+	// index 3
+	{
+		structureName : 'Kings Club Slow (3h) - 30,000 chips',
+		rounds :
+		[
+			{minutes: 15, small: 100, big: 200, ante: 0},
+			{minutes: 15, small: 200, big: 400, ante: 0},
+			{minutes: 15, small: 300, big: 600, ante: 0},
+			{minutes: 15, small: 400, big: 800, ante: 0},
+			{minutes: 15, small: 600, big: 1200, ante: 0},
+			{minutes: 15, small: 800, big: 1600, ante: 0},
+			{minutes: 15, small: 1000, big: 2000, ante: 0},
+			{minutes: 15, small: 1500, big: 3000, ante: 0},
+			{minutes: 15, small: 2000, big: 4000, ante: 0},
+			{minutes: 15, small: 3000, big: 6000, ante: 0},
+			{minutes: 15, small: 4000, big: 8000, ante: 0},
+			{minutes: 15, small: 5000, big: 10000, ante: 0}
+		]
+	},
+	// index 4
+	{
+		structureName : 'Home Game Turbo with antes',
+		rounds :
+		[
+			{minutes: 5, small: 15, big: 30, ante: 4},
+			{minutes: 5, small: 25, big: 50, ante: 6},
+			{minutes: 5, small: 35, big: 70, ante: 9},
+			{minutes: 5, small: 50, big: 100, ante: 12},
+			{minutes: 5, small: 75, big: 150, ante: 20},
+			{minutes: 5, small: 100, big: 200, ante: 25},
+			{minutes: 5, small: 125, big: 250, ante: 30},
+			{minutes: 5, small: 150, big: 300, ante: 40},
+			{minutes: 5, small: 200, big: 400, ante: 50},
+			{minutes: 5, small: 250, big: 500, ante: 65},
+			{minutes: 5, small: 300, big: 600, ante: 75},
+			{minutes: 5, small: 350, big: 700, ante: 90},
+			{minutes: 5, small: 400, big: 800, ante: 100},
+			{minutes: 5, small: 500, big: 1000, ante: 125},
+			{minutes: 5, small: 600, big: 1200, ante: 150},
+			{minutes: 5, small: 700, big: 1400, ante: 175},
+			{minutes: 5, small: 800, big: 1600, ante: 200},
+			{minutes: 5, small: 1000, big: 2000, ante: 250},
+			{minutes: 5, small: 1250, big: 2500, ante: 315},
+			{minutes: 5, small: 1500, big: 3000, ante: 375},
+			{minutes: 5, small: 2000, big: 4000, ante: 500},
+			{minutes: 5, small: 2500, big: 5000, ante: 625},
+			{minutes: 5, small: 3000, big: 6000, ante: 750},
+			{minutes: 5, small: 3500, big: 7000, ante: 875},
+			{minutes: 5, small: 4000, big: 8000, ante: 1000},
+			{minutes: 5, small: 5000, big: 10000, ante: 1250}
+		]
+	},
+	// index 5
+	{
+		structureName : 'Empty Structure',
+		rounds : [
+			{minutes: 0, small: 0, big: 0, ante: 0},
+		]
+	}
+];
+
 $(function () { pokerClock.init(); });
 
 var pokerClock = {
@@ -29,14 +173,14 @@ var pokerClock = {
 						var newRound = {};
 						if (fields.length > 2){
 							newRound = {
-							    minutes: parseInt(fields[4]),
+							    minutes: parseFloat(fields[4]),
 							    small: parseInt(fields[1]),
 							    big: parseInt(fields[2]),
 							    ante: parseInt(fields[3]),
 							};
 						}else{
 							newRound = {
-							    minutes: parseInt(fields[1]),
+							    minutes: parseFloat(fields[1]),
 							    small: 0,
 							    big: 0,
 							    ante: 0,
@@ -76,11 +220,32 @@ var pokerClock = {
 			$('#roundEntry').val(formatString); // .html(formatString);
 			$("#importStructureDialog").dialog('open');
 		});
-		$("#pauseButton").toggle(pokerClock.pauseCountdown, pokerClock.startCountdown).click();
-		$("#soundButton").toggle(pokerClock.muteOn,pokerClock.muteOff).css({color:'green'});
+		$("#pauseButton")
+		.attr("title", "start clock")
+		.data("paused", true)
+		.on("click", function () {
+			if ($(this).data("paused")) {
+				pokerClock.startCountdown.call(this);
+				$(this).data("paused", false);
+			} else {
+				pokerClock.pauseCountdown.call(this);
+				$(this).data("paused", true);
+			}
+		});
+		//$("#soundButton").toggle(pokerClock.muteOn,pokerClock.muteOff).css({color:'green'});
+		$("#soundButton")
+		.button()
+		.css({ color: 'green' })
+		.on("click", function () {
+			if (pokerClock.mute) {
+				pokerClock.muteOff();
+			} else {
+				pokerClock.muteOn();
+			}
+		});
 
 		$("#startRound").bind('click', function(){
-			if(!pokerClock.mute){pokerClock.pop.play()};
+			//if(!pokerClock.mute){pokerClock.pop.play()};
 			pokerClock.startRound(pokerClock.currentRound);
 		}).attr({title:'restart current round'});
 
@@ -88,7 +253,7 @@ var pokerClock = {
 					   .bind('click', function(){
 			$('.timeLeft').removeClass('warning');
 			if (pokerClock.currentRound < pokerClock.rounds.length - 1){
-				if(!pokerClock.mute){pokerClock.pop.play()};
+				//if(!pokerClock.mute){pokerClock.pop.play()};
 				pokerClock.currentRound++;
 				pokerClock.startRound(pokerClock.currentRound);
 				pokerClock.showRounds();
@@ -97,7 +262,7 @@ var pokerClock = {
 		$(".prevRound").attr({title:'previous round'})
 					   .bind('click', function(){
 							if (pokerClock.currentRound > 0){
-								if(!pokerClock.mute){pokerClock.pop.play()};
+								//if(!pokerClock.mute){pokerClock.pop.play()};
 								pokerClock.currentRound--;
 								pokerClock.startRound(pokerClock.currentRound) ;
 								pokerClock.showRounds();
@@ -105,18 +270,22 @@ var pokerClock = {
 						});
 
 		$("#structure").change(function(){
-			pokerClock.loadStructure($(this).val());
+			pokerClock.loadStructure($(this).val(), pokerClock.structures);
 		});
 
 		$( "#tabs" ).tabs();
 
-		$('button').live('mouseover',function(){
+		$(document)
+		.on('mouseover', 'button', function() {
 			$(this).addClass('ui-state-hover');
-		}).live('mouseout',function(){
+		})
+		.on('mouseout', 'button', function() {
 			$(this).removeClass('ui-state-hover');
-		}).live('mousedown',function(){
+		})
+		.on('mousedown', 'button', function() {
 			$(this).addClass('ui-state-active');
-		}).live('mouseout',function(){
+		})
+		.on('mouseup mouseout', 'button', function() {
 			$(this).removeClass('ui-state-active');
 		});
 
@@ -149,19 +318,16 @@ var pokerClock = {
 			}
 		}
 
-		pokerClock.showStructures();
-		pokerClock.loadStructure(1);
+		pokerClock.showStructures(pokerClock.structures);
+		pokerClock.loadStructure(1, pokerClock.structures);
 		$('#structure').prop('selectedIndex', 1);
 	},
 	cfg : {
 		debug: false
 	},
-	// webserver absolute replaceWith:
-	// "/clock/snd/..."
-	// local relative path:
-	// "./snd/..."
-	pop : new Audio("/clock/snd/pop.wav"),
-	alert : new Audio("/clock/snd/alert.wav"),
+	structures : DEBUG_MODE ? DEBUG_STRUCTURES : PRESET_STRUCTURES,
+	//pop : new Audio(AUDIO_PATH + "pop.wav"),
+	alert : new Audio(AUDIO_PATH + "alert.mp3"),
 	currentRound : 0,
 	nextRound : function(){
 		this.currentRound++;
@@ -177,7 +343,7 @@ var pokerClock = {
 	},
 	muteOff : function(){
 		pokerClock.mute = false;
-		pokerClock.pop.play();
+		//pokerClock.pop.play();
 		$("#soundButton").css({color:'green'}).attr({title:'sound enabled'});
 	},
 	timeInterval : 0,
@@ -191,19 +357,19 @@ var pokerClock = {
 		$(this).html('pause');
 	},
 	startCountdown : function(){
-		if(!pokerClock.mute){pokerClock.pop.play()};
+		//if(!pokerClock.mute){pokerClock.pop.play()};
 		pokerClock.countdownInterval = setInterval( function(){pokerClock.showCountdown()}, 1000);
 		$(".timeLeft").removeClass('paused');
-		$(this).html('pause clock').attr({'title':'pause clock'});
+		$(this).html('⏸ pause').attr({'title':'pause clock'});
 		pokerClock.logEvent('clock unpaused');
 	},
 	pauseCountdown : function(){
-    if(!pokerClock.mute){pokerClock.pop.play()};
+    	//if(!pokerClock.mute){pokerClock.pop.play()};
 		pokerClock.logEvent('clock paused');
 		clearInterval(pokerClock.countdownInterval);
 		$(".timeLeft").addClass('paused');
 		$("#tabs li:nth-child(2) a").addClass('paused');
-		$(this).html('start clock').attr({'title':'start clock'});
+		$(this).html('▶ start').attr({'title':'start clock'});
 	},
 	emptyRounds : function(){
 		pokerClock.rounds = [];
@@ -352,129 +518,19 @@ var pokerClock = {
 	randomSort : function(a,b){
 		return( parseInt( Math.random()*10 ) %2 );
 	},
-	loadStructure : function(sIndex) {
-		pokerClock.rounds = pokerClock.structures[sIndex].rounds;
+	loadStructure : function(sIndex, structuresArray) {
+		pokerClock.rounds = structuresArray[sIndex].rounds;
 		pokerClock.currentRound = 0;
 		pokerClock.startRound(pokerClock.currentRound);
 		pokerClock.showRounds();
 	},
 
-	showStructures : function(){
-		for(i in pokerClock.structures){
-			var optString = '<option value="'+i+'">' + pokerClock.structures[i].structureName + '</option>';
+	showStructures : function(structuresArray){
+		$("#structure").empty(); // clear existing options
+
+		for(let i=0; i<structuresArray.length; i++){
+			let optString = '<option value="'+i+'">' + structuresArray[i].structureName + '</option>';
 			$("#structure").append(optString);
 		}
-	},
-	structures :
-	[
-		//begin structure
-		{
-			structureName : 'Kings Club Turbo (1h) - 30,000 chips',
-			rounds :
-			[
-				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 10, small: 300, big: 600, ante: 0},
-				{minutes: 10, small: 500, big: 1000, ante: 0},
-				{minutes: 10, small: 1000, big: 2000, ante: 0},
-				{minutes: 5, small: 2000, big: 4000, ante: 0},
-				{minutes: 5, small: 3000, big: 6000, ante: 0},
-				{minutes: 5, small: 4000, big: 8000, ante: 0},
-				{minutes: 5, small: 5000, big: 10000, ante: 0}
-			]
-		},
-		//begin structure
-		{
-			structureName : 'Kings Club Fast (1.5h) - 30,000 chips',
-			rounds :
-			[
-				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 10, small: 300, big: 600, ante: 0},
-				{minutes: 10, small: 500, big: 1000, ante: 0},
-				{minutes: 10, small: 1000, big: 2000, ante: 0},
-				{minutes: 10, small: 1500, big: 3000, ante: 0},
-				{minutes: 10, small: 2000, big: 4000, ante: 0},
-				{minutes: 10, small: 3000, big: 6000, ante: 0},
-				{minutes: 10, small: 4000, big: 8000, ante: 0},
-				{minutes: 10, small: 5000, big: 10000, ante: 0}
-			]
-		},
-		//begin structure
-		{
-			structureName : 'Kings Club Medium (2h) - 30,000 chips',
-			rounds :
-			[
-				{minutes: 10, small: 100, big: 200, ante: 0},
-				{minutes: 10, small: 200, big: 400, ante: 0},
-				{minutes: 10, small: 300, big: 600, ante: 0},
-				{minutes: 10, small: 400, big: 800, ante: 0},
-				{minutes: 10, small: 600, big: 1200, ante: 0},
-				{minutes: 10, small: 800, big: 1600, ante: 0},
-				{minutes: 10, small: 1000, big: 2000, ante: 0},
-				{minutes: 10, small: 1500, big: 3000, ante: 0},
-				{minutes: 10, small: 2000, big: 4000, ante: 0},
-				{minutes: 10, small: 3000, big: 6000, ante: 0},
-				{minutes: 10, small: 4000, big: 8000, ante: 0},
-				{minutes: 10, small: 5000, big: 10000, ante: 0}
-			]
-		},
-		//begin structure
-		{
-			structureName : 'Kings Club Slow (3h) - 30,000 chips',
-			rounds :
-			[
-				{minutes: 15, small: 100, big: 200, ante: 0},
-				{minutes: 15, small: 200, big: 400, ante: 0},
-				{minutes: 15, small: 300, big: 600, ante: 0},
-				{minutes: 15, small: 400, big: 800, ante: 0},
-				{minutes: 15, small: 600, big: 1200, ante: 0},
-				{minutes: 15, small: 800, big: 1600, ante: 0},
-				{minutes: 15, small: 1000, big: 2000, ante: 0},
-				{minutes: 15, small: 1500, big: 3000, ante: 0},
-				{minutes: 15, small: 2000, big: 4000, ante: 0},
-				{minutes: 15, small: 3000, big: 6000, ante: 0},
-				{minutes: 15, small: 4000, big: 8000, ante: 0},
-				{minutes: 15, small: 5000, big: 10000, ante: 0}
-			]
-		},
-		//begin structure
-		{
-			structureName : 'Home Game Turbo with antes',
-			rounds :
-			[
-				{minutes: 5, small: 15, big: 30, ante: 4},
-				{minutes: 5, small: 25, big: 50, ante: 6},
-				{minutes: 5, small: 35, big: 70, ante: 9},
-				{minutes: 5, small: 50, big: 100, ante: 12},
-				{minutes: 5, small: 75, big: 150, ante: 20},
-				{minutes: 5, small: 100, big: 200, ante: 25},
-				{minutes: 5, small: 125, big: 250, ante: 30},
-				{minutes: 5, small: 150, big: 300, ante: 40},
-				{minutes: 5, small: 200, big: 400, ante: 50},
-				{minutes: 5, small: 250, big: 500, ante: 65},
-				{minutes: 5, small: 300, big: 600, ante: 75},
-				{minutes: 5, small: 350, big: 700, ante: 90},
-				{minutes: 5, small: 400, big: 800, ante: 100},
-				{minutes: 5, small: 500, big: 1000, ante: 125},
-				{minutes: 5, small: 600, big: 1200, ante: 150},
-				{minutes: 5, small: 700, big: 1400, ante: 175},
-				{minutes: 5, small: 800, big: 1600, ante: 200},
-				{minutes: 5, small: 1000, big: 2000, ante: 250},
-				{minutes: 5, small: 1250, big: 2500, ante: 315},
-				{minutes: 5, small: 1500, big: 3000, ante: 375},
-				{minutes: 5, small: 2000, big: 4000, ante: 500},
-				{minutes: 5, small: 2500, big: 5000, ante: 625},
-				{minutes: 5, small: 3000, big: 6000, ante: 750},
-				{minutes: 5, small: 3500, big: 7000, ante: 875},
-				{minutes: 5, small: 4000, big: 8000, ante: 1000},
-				{minutes: 5, small: 5000, big: 10000, ante: 1250}
-			]
-		},
-		//begin structure
-		{
-			structureName : 'Empty Structure',
-			rounds : [
-				{minutes: 0, small: 0, big: 0, ante: 0},
-			]
-		}
-	]
+	}
 };
