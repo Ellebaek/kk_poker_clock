@@ -1,4 +1,4 @@
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 const DEBUG_STRUCTURES = [
 	{
 		structureName: 'Debug Test Super Fast',
