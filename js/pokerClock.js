@@ -1,4 +1,4 @@
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 const DEBUG_STRUCTURES = [
 	{
 		structureName: 'Debug Test Super Fast',
@@ -141,6 +141,25 @@ const PRESET_STRUCTURES = [
 		]
 	}
 ];
+
+let wakeLock = null;
+
+async function keepScreenAwake() {
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        console.log('Screen Wake Lock active');
+    } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+    }
+}
+
+function releaseScreenAwake() {
+    if (wakeLock !== null) {
+        wakeLock.release();
+        wakeLock = null;
+        console.log('Screen Wake Lock released');
+    }
+}
 
 $(function () { pokerClock.init(); });
 
@@ -321,6 +340,13 @@ var pokerClock = {
 		pokerClock.showStructures(pokerClock.structures);
 		pokerClock.loadStructure(1, pokerClock.structures);
 		$('#structure').prop('selectedIndex', 1);
+
+		// re-enable keeping screen awake if user has navigated away and back
+		document.addEventListener('visibilitychange', async () => {
+			if (wakeLock !== null && document.visibilityState === 'visible') {
+				await keepScreenAwake();
+			}
+		});
 	},
 	cfg : {
 		debug: false
@@ -356,7 +382,8 @@ var pokerClock = {
 		$(".timeLeft").removeClass('paused');
 		$(this).html('pause');
 	},
-	startCountdown : function(){
+	startCountdown : async function(){
+		await keepScreenAwake();
 		//if(!pokerClock.mute){pokerClock.pop.play()};
 		pokerClock.countdownInterval = setInterval( function(){pokerClock.showCountdown()}, 1000);
 		$(".timeLeft").removeClass('paused');
@@ -366,6 +393,7 @@ var pokerClock = {
 	pauseCountdown : function(){
     	//if(!pokerClock.mute){pokerClock.pop.play()};
 		pokerClock.logEvent('clock paused');
+		releaseScreenAwake();
 		clearInterval(pokerClock.countdownInterval);
 		$(".timeLeft").addClass('paused');
 		$("#tabs li:nth-child(2) a").addClass('paused');
